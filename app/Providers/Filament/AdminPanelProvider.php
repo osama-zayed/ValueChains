@@ -7,10 +7,11 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
+use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use App\Filament\Admin\Pages\Auth\Login;
-use App\Filament\Admin\Pages\EditProfile;
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\EditProfile;
 use App\Filament\Admin\Resources\ActivityResource\Widgets\ActivityChart;
 use App\Filament\Admin\Resources\ProcedureResource\Widgets\ProcedureChart;
 use App\Http\Middleware\Permission;
@@ -48,6 +49,8 @@ class AdminPanelProvider extends PanelProvider
             ->profile(EditProfile::class)
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
                 ActivityChart::class,
                 ProcedureChart::class,
             ])

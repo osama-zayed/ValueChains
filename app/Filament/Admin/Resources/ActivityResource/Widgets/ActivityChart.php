@@ -27,6 +27,7 @@ class ActivityChart extends ChartWidget
                 [
                     'label' => 'الانشطة',
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'backgroundColor' => '#36A2EB',
                 ],
             ],
             'labels' => $data->map(fn (TrendValue $value) => $value->date),

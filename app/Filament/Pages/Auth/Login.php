@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Pages\Auth;
+namespace App\Filament\Pages\Auth;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;

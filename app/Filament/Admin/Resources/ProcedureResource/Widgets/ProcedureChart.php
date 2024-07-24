@@ -25,6 +25,7 @@ class ProcedureChart extends ChartWidget
                 [
                     'label' => 'الاجراءات',
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+               'backgroundColor' => '#36A2EB',
                 ],
             ],
             'labels' => $data->map(fn (TrendValue $value) => $value->date),

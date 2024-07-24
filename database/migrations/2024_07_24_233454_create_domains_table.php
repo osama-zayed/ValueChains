@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('domains', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('hijri_created_at')->nullable();
             $table->timestamps();
         });
     }

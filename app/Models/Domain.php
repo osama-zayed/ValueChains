@@ -24,11 +24,8 @@ class Domain extends Model
     protected $fillable = [
         'id',
         'name',
-        'phone',
-        'status',
-        'association_id',
+        'hijri_created_at',
     ];
-
     /**
      * Get the association associated with the driver.
      */

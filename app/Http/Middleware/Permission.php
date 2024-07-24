@@ -17,14 +17,7 @@ class Permission
     {
         if ($request->user()->user_type == $role) {
             return $next($request);
-        } else {
-            // $request->user()->currentAccessToken()->delete();
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'status' => 'false',
-                    'message' => 'غير مصرح لك',
-                ], 403);
-            }
+        } else {           
             auth()->logout();
             return abort(403);
         }

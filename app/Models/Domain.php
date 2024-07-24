@@ -10,14 +10,14 @@ class Domain extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * The table Domain with the model.
      *
      * @var string
      */
-    protected $table = 'drivers';
+    protected $table = 'domains';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass Domain.
      *
      * @var array<int, string>
      */
@@ -27,7 +27,7 @@ class Domain extends Model
         'hijri_created_at',
     ];
     /**
-     * Get the association associated with the driver.
+     * Get the Domain with the driver.
      */
     public function association()
     {

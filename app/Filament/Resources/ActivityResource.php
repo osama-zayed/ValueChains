@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProjectResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers;
-use App\Models\Project;
+use App\Filament\Resources\ActivityResource\Pages;
+use App\Filament\Resources\ActivityResource\RelationManagers;
+use App\Models\Activity;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,22 +14,35 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProjectResource extends Resource
+class ActivityResource extends Resource
 {
-    protected static ?string $model = Project::class;
+    protected static ?string $model = Activity::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-link';
 
-    protected static ?int $navigationSort = 4;
-    protected static ?string $modelLabel = 'المشروع';
-    protected static ?string $pluralLabel = 'المشاريع';
-    public static function projectForm()
+    protected static ?int $navigationSort = 5;
+    protected static ?string $modelLabel = 'نشاط';
+    protected static ?string $pluralLabel = 'الانشطة';
+
+    public static function activityForm()
     {
         return [
             Forms\Components\TextInput::make('name')
                 ->required()
-                ->label('اسم المشروع')
+                ->label('اسم النشاط')
                 ->maxLength(255),
+            Forms\Components\TextInput::make('target_value')
+                ->required()
+                ->label('القيمة المستهدفة')
+                ->numeric(),
+            Forms\Components\TextInput::make('target_indicator')
+                ->required()
+                ->label('مؤاشر القيمة المستهدفة ')
+                ->maxLength(255),
+            Forms\Components\TextInput::make('activity_weight')
+                ->required()
+                ->label('وزن النشاط')
+                ->numeric(),
             Forms\Components\Select::make('domain_id')
                 ->relationship('domain', titleAttribute: 'name')
                 ->label('المجال')
@@ -48,6 +61,15 @@ class ProjectResource extends Resource
                 ->createOptionForm(
                     ChainResource::chainForm()
                 ),
+            Forms\Components\Select::make('project_id')
+                ->relationship('project', titleAttribute: 'name')
+                ->label('المشروع')
+                ->searchable()
+                ->preload()
+                ->required()
+                ->createOptionForm(
+                    ProjectResource::projectForm()
+                ),
 
             Forms\Components\Select::make('user_id')
                 ->relationship('user', titleAttribute: 'name')
@@ -60,10 +82,13 @@ class ProjectResource extends Resource
                 ->required(),
         ];
     }
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(self::projectForm());
+            ->schema(
+                self::activityForm()
+            );
     }
 
     public static function table(Table $table): Table
@@ -71,8 +96,19 @@ class ProjectResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم المشروع')
+                    ->label('اسم النشاط')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('target_value')
+                    ->numeric()
+                    ->label('القيمة المستهدفة')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('target_indicator')
+                    ->label('مؤاشر القيمة المستهدفة')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('activity_weight')
+                    ->label('وزن النشاط')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('domain.name')
                     ->numeric()
                     ->label('المجال')
@@ -83,15 +119,16 @@ class ProjectResource extends Resource
                     ->label('السلسلة')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('project.name')
+                    ->numeric()
+                    ->label('المشروع')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('المستخدم')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('hijri_created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -128,10 +165,10 @@ class ProjectResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
-            'view' => Pages\ViewProject::route('/{record}'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
+            'index' => Pages\ListActivities::route('/'),
+            'create' => Pages\CreateActivity::route('/create'),
+            'view' => Pages\ViewActivity::route('/{record}'),
+            'edit' => Pages\EditActivity::route('/{record}/edit'),
         ];
     }
 }

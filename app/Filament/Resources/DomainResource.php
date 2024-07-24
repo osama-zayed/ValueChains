@@ -45,12 +45,14 @@ class DomainResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم المجال')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                    Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
+                    ->label('وقت الاضافة')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
+                    ->label('وقت التعديل')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

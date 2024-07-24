@@ -74,16 +74,22 @@ class UserResource extends Resource
                     ->label('رقم الموبايل')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
-                    ->label('حالة المستخدم')
-                    ->boolean(),
+                    ->label('الحالة')
+                    ->boolean()
+                    ->action(function ($record, $column) {
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('وقت الاضافة')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('وقت التعديل')
                     ->dateTime()
+                    ->label('وقت التعديل')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

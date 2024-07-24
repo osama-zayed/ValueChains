@@ -77,6 +77,15 @@ class ProcedureResource extends Resource
                     ->createOptionForm(
                         ChainResource::chainForm()
                     ),
+                Forms\Components\Select::make('project_id')
+                    ->relationship('project', titleAttribute: 'name')
+                    ->label('المشروع')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        ChainResource::chainForm()
+                    ),
                 Forms\Components\Select::make('activity_id')
                     ->relationship('activity', titleAttribute: 'name')
                     ->label('النشاط')
@@ -101,6 +110,7 @@ class ProcedureResource extends Resource
             Forms\Components\Toggle::make('status')
                 ->label('الحالة')
                 ->required(),
+
             Forms\Components\Section::make([
                 Forms\Components\FileUpload::make('attached_file')
                     ->label('صور للمنتج')
@@ -121,52 +131,103 @@ class ProcedureResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('domain_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('chain_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('project_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('activity_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('hijri_created_at')
+                    ->label('الاجراء')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('procedure_weight')
                     ->numeric()
-                    ->sortable(),
+                    ->label('وزن الاجراء')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('procedure_duration_days')
                     ->numeric()
-                    ->sortable(),
+                    ->label('مدة تنفيذ الاجراء بالايام')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('procedure_start_date')
                     ->date()
-                    ->sortable(),
+                    ->label('بدء تنفيذ الاجراء')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('procedure_end_date')
                     ->date()
-                    ->sortable(),
+                    ->label('نهاية تنفيذ الاجراء')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('cost')
                     ->money()
-                    ->sortable(),
+                    ->label('التكلفة')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('funding_source')
-                    ->searchable(),
+                    ->label('مصدر التمويل')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('domain.name')
+                    ->label('المجال')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('chain.name')
+                    ->label('السلسلة')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('chain.Goals')
+                    ->label('الاهداف')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('project.name')
+                    ->label('المشروع')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('activity.name')
+                    ->label('النشاط')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('activity.target_value')
+                    ->numeric()
+                    ->label('وزن النشاط')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('activity.target_indicator')
+                    ->numeric()
+                    ->label('مؤاشر القيمة المستهدفة ')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('activity.activity_weight')
+                    ->numeric()
+                    ->label('وزن النشاط')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->label('المستخدم')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('attached_file')
-                    ->searchable(),
+                    ->label('الحالة')
+                    ->boolean()
+                    ->action(function ($record, $column) {
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
+                // Tables\Columns\TextColumn::make('hijri_created_at')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
+                    ->label('وقت الاضافة')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
+                    ->label('وقت التعديل')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

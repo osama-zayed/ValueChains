@@ -49,8 +49,6 @@ class AdminPanelProvider extends PanelProvider
             ->profile(EditProfile::class)
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
                 ActivityChart::class,
                 ProcedureChart::class,
             ])

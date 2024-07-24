@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('hijri_created_at')->nullable();
             $table->foreignId('domain_id')->references('id')->on('domains');
+            $table->foreignId('chain_id')->references('id')->on('chains');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

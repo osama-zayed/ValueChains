@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use Butschster\HijriDate\Hijri;
 
 class Domain extends Model
 {
@@ -26,6 +27,17 @@ class Domain extends Model
         'name',
         'hijri_created_at',
     ];
+
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::creating(function ($model) {
+    //         $model->hijri_created_at = Hijri::convertToHijri(now())->format('Y-m-d');
+    //     });
+    // }
+
     /**
      * Get the Domain with the driver.
      */

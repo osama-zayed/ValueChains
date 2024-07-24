@@ -16,7 +16,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('hijri_created_at')->nullable();
+            $table->decimal('target_value', 8, 2); // حقل القيمة المستهدفة
+            $table->string('target_indicator'); // حقل مؤشر القيمة المستهدفة
+            $table->decimal('activity_weight', 5, 2); // حقل وزن النشاط
             $table->foreignId('domain_id')->references('id')->on('domains');
+            $table->foreignId('chain_id')->references('id')->on('chains');
+            $table->foreignId('project_id')->references('id')->on('projects');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

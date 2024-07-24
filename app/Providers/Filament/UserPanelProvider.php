@@ -9,12 +9,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use App\Filament\Admin\Pages\Auth\Login;
-use App\Filament\Admin\Pages\EditProfile;
-use App\Filament\Admin\Resources\ActivityResource\Widgets\ActivityChart;
-use App\Filament\Admin\Resources\ProcedureResource\Widgets\ProcedureChart;
-use App\Http\Middleware\Permission;
-use App\Http\Middleware\userStatus;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -23,33 +18,25 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class UserPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-            ->login(Login::class)
+            ->id('user')
+            ->path('user')
             ->colors([
-                'primary' => Color::Blue,
-                'secondary' => Color::Gray,
-                'success' => Color::Green,
-                'warning' => Color::Yellow,
-                'danger' => Color::Red,
+                'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
+            ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')
+            ->discoverPages(in: app_path('Filament/User/Pages'), for: 'App\\Filament\\User\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->databaseNotifications()
-            ->profile(EditProfile::class)
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
-                ActivityChart::class,
-                ProcedureChart::class,
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -64,8 +51,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                Permission::class . ":admin",
-                userStatus::class,
             ]);
     }
 }

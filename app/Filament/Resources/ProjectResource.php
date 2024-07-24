@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -104,7 +105,21 @@ class ProjectResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('domain_id')
+                    ->label('المجال')
+                    ->multiple()
+                    ->relationship('domain', 'name'),
+                SelectFilter::make('user_id')
+                    ->label('المستخدم')
+                    ->multiple()
+                    ->options(function () {
+                        return User::where('user_type', 'user')->pluck('name', 'id');
+                    })
+                    ->relationship('user', 'name'),
+                SelectFilter::make('chain_id')
+                    ->label('السلسلة')
+                    ->multiple()
+                    ->relationship('chain', 'name'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

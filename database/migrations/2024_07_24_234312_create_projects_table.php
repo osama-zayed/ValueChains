@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //المشاريع
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('hijri_created_at')->nullable();
+            $table->foreignId('domain_id')->references('id')->on('domains');
             $table->timestamps();
         });
     }

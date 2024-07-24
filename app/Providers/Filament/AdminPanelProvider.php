@@ -2,10 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\UserProfile;
-use App\Filament\Resources\ExchangeResource\Widgets\ExchangeChart;
-use App\Filament\Resources\ProductResource\Widgets\StatsOverview;
-use App\Filament\Resources\SupplyResource\Widgets\SupplyChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -13,12 +9,10 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\EditProfile;
-use App\Filament\Resources\CollectingMilkFromFamilyResource\Widgets\CollectingMilkFromFamilyChart;
-use App\Filament\Resources\ReceiptInvoiceFromStoreResource\Widgets\ReceiptInvoiceFromStoreChart;
-use App\Filament\Resources\TransferToFactoryResource\Widgets\TransferToFactoryChart;
+use App\Filament\Resources\ActivityResource\Widgets\ActivityChart;
+use App\Filament\Resources\ProcedureResource\Widgets\ProcedureChart;
 use App\Http\Middleware\Permission;
 use App\Http\Middleware\userStatus;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -54,9 +48,8 @@ class AdminPanelProvider extends PanelProvider
             ->profile(EditProfile::class)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                // CollectingMilkFromFamilyChart::class,
-                // ReceiptInvoiceFromStoreChart::class,
-                // TransferToFactoryChart::class,
+                ActivityChart::class,
+                ProcedureChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

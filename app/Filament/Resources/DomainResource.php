@@ -23,16 +23,19 @@ class DomainResource extends Resource
     protected static ?string $modelLabel = 'المجال';
     protected static ?string $pluralLabel = 'المجالات';
 
+    public static function domainForm()
+    {
+        return [Forms\Components\TextInput::make('name')
+            ->required()
+            ->label('اسم المجال')
+            ->columnSpanFull()
+            ->maxLength(255)];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->label('اسم المجال')
-                    ->columnSpanFull()
-                    ->maxLength(255),
-            ]);
+            ->schema(self::domainForm());
     }
 
     public static function table(Table $table): Table

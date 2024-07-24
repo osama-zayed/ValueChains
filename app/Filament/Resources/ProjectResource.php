@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ChainResource\Pages;
-use App\Filament\Resources\ChainResource\RelationManagers;
-use App\Models\Chain;
+use App\Filament\Resources\ProjectResource\Pages;
+use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Models\Project;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,28 +14,22 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ChainResource extends Resource
+class ProjectResource extends Resource
 {
-    protected static ?string $model = Chain::class;
+    protected static ?string $model = Project::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-link';
 
-    protected static ?int $navigationSort = 3;
-    protected static ?string $modelLabel = 'سلسلة';
-    protected static ?string $pluralLabel = 'السلاسل';
-    public static function chainForm()
+    protected static ?int $navigationSort = 4;
+    protected static ?string $modelLabel = 'المشروع';
+    protected static ?string $pluralLabel = 'المشاريع';
+    public static function projectForm()
     {
         return [
             Forms\Components\TextInput::make('name')
                 ->required()
-                ->label('اسم السلسلة')
-                ->columnSpanFull()
+                ->label('اسم المشروع')
                 ->maxLength(255),
-            Forms\Components\Textarea::make('Goals')
-                ->required()
-                ->label('الاهداف')
-                ->maxLength(65535)
-                ->columnSpanFull(),
             Forms\Components\Select::make('domain_id')
                 ->relationship('domain', titleAttribute: 'name')
                 ->label('المجال')
@@ -45,6 +39,16 @@ class ChainResource extends Resource
                 ->createOptionForm(
                     DomainResource::domainForm()
                 ),
+            Forms\Components\Select::make('chain_id')
+                ->relationship('chain', titleAttribute: 'name')
+                ->label('السلسلة')
+                ->searchable()
+                ->preload()
+                ->required()
+                ->createOptionForm(
+                    ChainResource::chainForm()
+                ),
+
             Forms\Components\Select::make('user_id')
                 ->relationship('user', titleAttribute: 'name')
                 ->label('المستخدم')
@@ -56,11 +60,10 @@ class ChainResource extends Resource
                 ->required(),
         ];
     }
-
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(self::chainForm());
+            ->schema(self::projectForm());
     }
 
     public static function table(Table $table): Table
@@ -68,8 +71,13 @@ class ChainResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم السلسلة')
+                    ->label('اسم المشروع')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('chain.name')
+                    ->numeric()
+                    ->label('السلسلة')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('domain.name')
                     ->numeric()
                     ->label('المجال')
@@ -120,10 +128,10 @@ class ChainResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListChains::route('/'),
-            'create' => Pages\CreateChain::route('/create'),
-            'view' => Pages\ViewChain::route('/{record}'),
-            'edit' => Pages\EditChain::route('/{record}/edit'),
+            'index' => Pages\ListProjects::route('/'),
+            'create' => Pages\CreateProject::route('/create'),
+            'view' => Pages\ViewProject::route('/{record}'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
 }

@@ -38,11 +38,5 @@ class Domain extends Model
     //     });
     // }
 
-    /**
-     * Get the Domain with the driver.
-     */
-    public function association()
-    {
-        return $this->belongsTo(User::class);
-    }
+
 }

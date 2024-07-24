@@ -19,7 +19,7 @@ return new class extends Migration
         $table->foreignId('domain_id')->constrained('domains');
         $table->foreignId('chain_id')->constrained('chains');
         $table->foreignId('project_id')->constrained('projects');
-        $table->foreignId('activitie_id')->constrained('activities');
+        $table->foreignId('activity_id')->constrained('activities');
         $table->foreignId('user_id')->constrained('users');
         $table->decimal('procedure_weight', 5, 2); // وزن الإجراء
         $table->integer('procedure_duration_days'); // مدة الإجراء بالأيام

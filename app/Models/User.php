@@ -30,8 +30,6 @@ class User extends Authenticatable
         'phone',
         'status',
         'user_type',
-        'association_id',
-        'factory_id',
         'password',
     ];
 
@@ -55,20 +53,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Get the factory associated with the user.
-     */
-    public function factory()
-    {
-        return $this->belongsTo(Factory::class);
-    }
-    /**
-     * Get the association's branch associated with the Family.
-     */
-    public function association()
-    {
-        return $this->belongsTo(User::class);
-    }
     public function activitylog()
     {
         return $this->hasMany(Activitylog::class,'subject_id');

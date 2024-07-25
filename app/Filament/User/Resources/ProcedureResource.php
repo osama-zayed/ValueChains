@@ -43,17 +43,17 @@ class ProcedureResource extends Resource
                 Forms\Components\TextInput::make('procedure_weight')
                     ->required()
                     ->label('وزن الاجراء')
-                    ->min(0)
+                    ->minValue(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('procedure_duration_days')
                     ->required()
                     ->label('مدة الاجراء بالايام')
-                    ->min(0)
+                    ->minValue(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('cost')
                     ->required()
                     ->numeric()
-                    ->min(0)
+                    ->minValue(0)
                     ->label('التكلفة')
                     ->prefix('ريال'),
                 Forms\Components\DatePicker::make('procedure_start_date')

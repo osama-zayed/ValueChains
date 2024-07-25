@@ -296,7 +296,7 @@ class ProcedureResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -309,7 +309,7 @@ class ProcedureResource extends Resource
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -340,9 +340,9 @@ class ProcedureResource extends Resource
     {
         return [
             'index' => Pages\ListProcedures::route('/'),
-            'create' => Pages\CreateProcedure::route('/create'),
+            // 'create' => Pages\CreateProcedure::route('/create'),
             'view' => Pages\ViewProcedure::route('/{record}'),
-            'edit' => Pages\EditProcedure::route('/{record}/edit'),
+            // 'edit' => Pages\EditProcedure::route('/{record}/edit'),
         ];
     }
 }

@@ -189,7 +189,7 @@ class ActivityResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -197,7 +197,7 @@ class ActivityResource extends Resource
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -212,9 +212,9 @@ class ActivityResource extends Resource
     {
         return [
             'index' => Pages\ListActivities::route('/'),
-            'create' => Pages\CreateActivity::route('/create'),
+            // 'create' => Pages\CreateActivity::route('/create'),
             'view' => Pages\ViewActivity::route('/{record}'),
-            'edit' => Pages\EditActivity::route('/{record}/edit'),
+            // 'edit' => Pages\EditActivity::route('/{record}/edit'),
         ];
     }
 }

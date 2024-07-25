@@ -39,18 +39,17 @@ class ActivityResource extends Resource
                 Forms\Components\TextInput::make('target_value')
                     ->required()
                     ->label('القيمة المستهدفة')
-                    ->min(0)
+                    ->minValue(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('target_indicator')
                     ->required()
                     ->label('مؤاشر القيمة المستهدفة ')
-                    ->min(0)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('activity_weight')
                     ->required()
                     ->label('وزن النشاط')
-                    ->max(100)
-                    ->min(0)
+                    ->maxValue(100)
+                    ->minValue(0)
                     ->numeric(),
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([

@@ -22,9 +22,8 @@ class ListProjects extends ListRecords
     {
         $query = parent::getTableQuery();
         if ($user = auth()->user()) {
-            $query->where('user_id', '!=', $user->id);
+            $query->where('user_id',  $user->id);
         }
-        $query->where('user_type', 'user');
         return $query;
     }
 }

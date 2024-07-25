@@ -15,22 +15,12 @@ class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $UserCount = User::where('user_type', 'user')->where("id", auth()->user()->id)->count();
-        $DomainCount = Domain::where("id", auth()->user()->id)->count();
-        $ProjectCount = Project::where("id", auth()->user()->id)->count();
-        $ChainCount = Chain::where("id", auth()->user()->id)->count();
-        $ActivityCount = Activity::where("id", auth()->user()->id)->count();
-        $ProcedureCount = Procedure::where("id", auth()->user()->id)->count();
+        $ProjectCount = Project::where("user_id", auth()->user()->id)->count();
+        $ChainCount = Chain::where("user_id", auth()->user()->id)->count();
+        $ActivityCount = Activity::where("user_id", auth()->user()->id)->count();
+        $ProcedureCount = Procedure::where("user_id", auth()->user()->id)->count();
 
         return [
-            Stat::make('عدد المستخدمين', $UserCount)
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([15, 2, 5, 3, 15, 4, 5])
-                ->color('info'),
-            Stat::make('عدد المجالات', $DomainCount)
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([15, 5, 10, 3, 5, 5, 15])
-                ->color('info'),
             Stat::make('عدد السلاسل', $ChainCount)
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([15, 5, 10, 3, 5, 5, 15])

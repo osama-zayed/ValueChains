@@ -57,6 +57,9 @@ class ActivityResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->createOptionForm(
+                        DomainResource::domainForm()
+                    )
                     ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
                 Forms\Components\Select::make('chain_id')
                     ->label('السلسلة')
@@ -71,6 +74,9 @@ class ActivityResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->createOptionForm(
+                        ChainResource::chainForm()
+                    )
                     ->afterStateUpdated(fn (callable $set) => $set('project_id', null)),
 
                 Forms\Components\Select::make('project_id')
@@ -85,6 +91,9 @@ class ActivityResource extends Resource
                     ->reactive()
                     ->searchable()
                     ->preload()
+                    ->createOptionForm(
+                        ProjectResource::projectForm()
+                    )
                     ->required(),
 
                 Forms\Components\Select::make('user_id')

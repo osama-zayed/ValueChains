@@ -74,6 +74,9 @@ class ProcedureResource extends Resource
                     ->reactive()
                     ->searchable()
                     ->preload()
+                    ->createOptionForm(
+                        DomainResource::domainForm()
+                    )
                     ->required()
                     ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
 
@@ -90,6 +93,9 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->createOptionForm(
+                        ChainResource::chainForm()
+                    )
                     ->afterStateUpdated(fn (callable $set) => $set('project_id', null)),
 
                 Forms\Components\Select::make('project_id')
@@ -105,6 +111,9 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->createOptionForm(
+                        ProjectResource::projectForm()
+                    )
                     ->afterStateUpdated(fn (callable $set) => $set('activity_id', null)),
 
                 Forms\Components\Select::make('activity_id')

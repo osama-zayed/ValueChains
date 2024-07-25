@@ -40,6 +40,9 @@ class ProjectResource extends Resource
                 ->searchable()
                 ->preload()
                 ->required()
+                ->createOptionForm(
+                    DomainResource::domainForm()
+                )
                 ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
 
             Forms\Components\Select::make('chain_id')
@@ -54,6 +57,9 @@ class ProjectResource extends Resource
                 ->reactive()
                 ->searchable()
                 ->preload()
+                ->createOptionForm(
+                    ChainResource::chainForm()
+                )
                 ->required(),
 
             Forms\Components\Select::make('user_id')

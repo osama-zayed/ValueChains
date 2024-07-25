@@ -105,6 +105,9 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->createOptionForm(
+                        ProjectResource::projectForm()
+                    )
                     ->afterStateUpdated(fn (callable $set) => $set('activity_id', null)),
 
                 Forms\Components\Select::make('activity_id')
@@ -125,15 +128,6 @@ class ProcedureResource extends Resource
                     )
                     ->reactive(),
 
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', titleAttribute: 'name')
-                    ->label('المستخدم')
-                    ->searchable()
-                    ->preload()
-                    ->options(function () {
-                        return User::where('user_type', 'user')->pluck('name', 'id');
-                    })
-                    ->required(),
             ])->columns(2)->collapsed(2),
 
             Forms\Components\Toggle::make('status')

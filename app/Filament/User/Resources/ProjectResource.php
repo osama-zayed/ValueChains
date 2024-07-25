@@ -55,16 +55,6 @@ class ProjectResource extends Resource
                 ->searchable()
                 ->preload()
                 ->required(),
-
-            Forms\Components\Select::make('user_id')
-                ->relationship('user', titleAttribute: 'name')
-                ->label('المستخدم')
-                ->searchable()
-                ->preload()
-                ->options(function () {
-                    return User::where('user_type', 'user')->pluck('name', 'id');
-                })
-                ->required(),
         ];
     }
     public static function form(Form $form): Form

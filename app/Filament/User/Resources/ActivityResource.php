@@ -87,15 +87,6 @@ class ActivityResource extends Resource
                     ->preload()
                     ->required(),
 
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', titleAttribute: 'name')
-                    ->label('المستخدم')
-                    ->searchable()
-                    ->preload()
-                    ->options(function () {
-                        return User::where('user_type', 'user')->pluck('name', 'id');
-                    })
-                    ->required(),
             ])->columns(2)->collapsed(2),
         ];
     }

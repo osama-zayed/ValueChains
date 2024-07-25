@@ -4,6 +4,8 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ProjectResource\Pages;
 use App\Filament\Admin\Resources\ProjectResource\RelationManagers;
+use App\Models\Chain;
+use App\Models\Domain;
 use App\Models\Project;
 use App\Models\User;
 use Filament\Forms;
@@ -32,23 +34,27 @@ class ProjectResource extends Resource
                 ->label('اسم المشروع')
                 ->maxLength(255),
             Forms\Components\Select::make('domain_id')
-                ->relationship('domain', titleAttribute: 'name')
                 ->label('المجال')
+                ->options(Domain::all()->pluck('name', 'id'))
+                ->reactive()
                 ->searchable()
                 ->preload()
                 ->required()
-                ->createOptionForm(
-                    DomainResource::domainForm()
-                ),
+                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+
             Forms\Components\Select::make('chain_id')
-                ->relationship('chain', titleAttribute: 'name')
                 ->label('السلسلة')
+                ->options(function (callable $get) {
+                    $domainId = $get('domain_id');
+                    if ($domainId) {
+                        return Chain::where('domain_id', $domainId)->pluck('name', 'id');
+                    }
+                    return Chain::all()->pluck('name', 'id');
+                })
+                ->reactive()
                 ->searchable()
                 ->preload()
-                ->required()
-                ->createOptionForm(
-                    ChainResource::chainForm()
-                ),
+                ->required(),
 
             Forms\Components\Select::make('user_id')
                 ->relationship('user', titleAttribute: 'name')
@@ -146,7 +152,7 @@ class ProjectResource extends Resource
     {
         return [
             'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
+            // 'create' => Pages\CreateProject::route('/create'),
             'view' => Pages\ViewProject::route('/{record}'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Admin\Resources;
+namespace App\Filament\User\Resources;
 
-use App\Filament\Admin\Resources\ProcedureResource\Pages;
-use App\Filament\Admin\Resources\ProcedureResource\RelationManagers;
+use App\Filament\User\Resources\ProcedureResource\Pages;
+use App\Filament\User\Resources\ProcedureResource\RelationManagers;
 use App\Models\Activity;
 use App\Models\Chain;
 use App\Models\Domain;

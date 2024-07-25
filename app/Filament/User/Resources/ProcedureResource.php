@@ -252,13 +252,6 @@ class ProcedureResource extends Resource
                     ->label('المجال')
                     ->multiple()
                     ->relationship('domain', 'name'),
-                SelectFilter::make('user_id')
-                    ->label('المستخدم')
-                    ->multiple()
-                    ->options(function () {
-                        return User::where('user_type', 'user')->pluck('name', 'id');
-                    })
-                    ->relationship('user', 'name'),
                 SelectFilter::make('chain_id')
                     ->label('السلسلة')
                     ->multiple()

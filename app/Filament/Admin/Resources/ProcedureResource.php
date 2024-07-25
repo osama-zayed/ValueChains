@@ -154,6 +154,7 @@ class ProcedureResource extends Resource
                     ->label('مرفق المصفوفة')
                     ->required()
                     ->nullable()
+                    ->downloadable()
                     ->directory('attached_file')
             ]),
         ];

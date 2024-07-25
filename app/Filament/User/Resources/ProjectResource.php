@@ -47,9 +47,9 @@ class ProjectResource extends Resource
                 ->options(function (callable $get) {
                     $domainId = $get('domain_id');
                     if ($domainId) {
-                        return Chain::where('domain_id', $domainId)->pluck('name', 'id');
+                        return Chain::where('user_id',auth()->user()->id)->where('domain_id', $domainId)->pluck('name', 'id');
                     }
-                    return Chain::all()->pluck('name', 'id');
+                    return Chain::where('user_id',auth()->user()->id)->pluck('name', 'id');
                 })
                 ->reactive()
                 ->searchable()

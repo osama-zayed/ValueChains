@@ -43,16 +43,19 @@ class ProcedureResource extends Resource
                 Forms\Components\TextInput::make('procedure_weight')
                     ->required()
                     ->label('وزن الاجراء')
+                    ->min(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('procedure_duration_days')
                     ->required()
                     ->label('مدة الاجراء بالايام')
+                    ->min(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('cost')
                     ->required()
                     ->numeric()
+                    ->min(0)
                     ->label('التكلفة')
-                    ->prefix('$'),
+                    ->prefix('ريال'),
                 Forms\Components\DatePicker::make('procedure_start_date')
                     ->label('بدء تنفيذ الاجراء')
                     ->required(),
@@ -82,9 +85,9 @@ class ProcedureResource extends Resource
                     ->options(function (callable $get) {
                         $domainId = $get('domain_id');
                         if ($domainId) {
-                            return Chain::where('domain_id', $domainId)->pluck('name', 'id');
+                            return Chain::where('user_id', auth()->user()->id)->where('domain_id', $domainId)->pluck('name', 'id');
                         }
-                        return Chain::all()->pluck('name', 'id');
+                        return Chain::where('user_id', auth()->user()->id)->pluck('name', 'id');
                     })
                     ->reactive()
                     ->searchable()
@@ -97,9 +100,9 @@ class ProcedureResource extends Resource
                     ->options(function (callable $get) {
                         $chainId = $get('chain_id');
                         if ($chainId) {
-                            return Project::where('chain_id', $chainId)->pluck('name', 'id');
+                            return Project::where('user_id', auth()->user()->id)->where('chain_id', $chainId)->pluck('name', 'id');
                         }
-                        return Project::all()->pluck('name', 'id');
+                        return Project::where('user_id', auth()->user()->id)->pluck('name', 'id');
                     })
                     ->reactive()
                     ->searchable()
@@ -119,9 +122,9 @@ class ProcedureResource extends Resource
                     ->options(function (callable $get) {
                         $chainId = $get('project_id');
                         if ($chainId) {
-                            return Activity::where('project_id', $chainId)->pluck('name', 'id');
+                            return Activity::where('user_id', auth()->user()->id)->where('project_id', $chainId)->pluck('name', 'id');
                         }
-                        return Activity::all()->pluck('name', 'id');
+                        return Activity::where('user_id', auth()->user()->id)->pluck('name', 'id');
                     })
                     ->createOptionForm(
                         ActivityResource::activityForm()
@@ -129,10 +132,6 @@ class ProcedureResource extends Resource
                     ->reactive(),
 
             ])->columns(2)->collapsed(2),
-
-            Forms\Components\Toggle::make('status')
-                ->label('الحالة')
-                ->required(),
 
             Forms\Components\Section::make([
                 Forms\Components\FileUpload::make('attached_file')
@@ -234,13 +233,7 @@ class ProcedureResource extends Resource
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('الحالة')
-                    ->boolean()
-                    ->action(function ($record, $column) {
-                        $name = $column->getName();
-                        $record->update([
-                            $name => !$record->$name
-                        ]);
-                    }),
+                    ->boolean(),
                 // Tables\Columns\TextColumn::make('hijri_created_at')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -39,14 +39,18 @@ class ActivityResource extends Resource
                 Forms\Components\TextInput::make('target_value')
                     ->required()
                     ->label('القيمة المستهدفة')
+                    ->min(0)
                     ->numeric(),
                 Forms\Components\TextInput::make('target_indicator')
                     ->required()
                     ->label('مؤاشر القيمة المستهدفة ')
+                    ->min(0)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('activity_weight')
                     ->required()
                     ->label('وزن النشاط')
+                    ->max(100)
+                    ->min(0)
                     ->numeric(),
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([
@@ -63,9 +67,9 @@ class ActivityResource extends Resource
                     ->options(function (callable $get) {
                         $domainId = $get('domain_id');
                         if ($domainId) {
-                            return Chain::where('domain_id', $domainId)->pluck('name', 'id');
+                            return Chain::where('user_id',auth()->user()->id)->where('domain_id', $domainId)->pluck('name', 'id');
                         }
-                        return Chain::all()->pluck('name', 'id');
+                        return Chain::where('user_id',auth()->user()->id)->pluck('name', 'id');
                     })
                     ->reactive()
                     ->searchable()
@@ -78,9 +82,9 @@ class ActivityResource extends Resource
                     ->options(function (callable $get) {
                         $chainId = $get('chain_id');
                         if ($chainId) {
-                            return Project::where('chain_id', $chainId)->pluck('name', 'id');
+                            return Project::where('user_id',auth()->user()->id)->where('chain_id', $chainId)->pluck('name', 'id');
                         }
-                        return Project::all()->pluck('name', 'id');
+                        return Project::where('user_id',auth()->user()->id)->pluck('name', 'id');
                     })
                     ->reactive()
                     ->searchable()

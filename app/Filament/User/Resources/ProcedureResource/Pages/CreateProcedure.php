@@ -14,6 +14,7 @@ class CreateProcedure extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $data['user_id'] = auth()->user()->id;
+        $data['status'] = 0;
         $user = Procedure::create($data);
 
         return $user;

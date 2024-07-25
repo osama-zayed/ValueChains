@@ -19,7 +19,7 @@ class ProcedureResource extends Resource
 {
     protected static ?string $model = Procedure::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?int $navigationSort = 6;
     protected static ?string $modelLabel = 'الاجراء';

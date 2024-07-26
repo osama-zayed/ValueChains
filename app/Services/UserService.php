@@ -27,7 +27,7 @@ class UserService
 
         activity()->causedBy($user)
             ->log(
-                'لقد قام ' . $userType . ' ' . $user->name . " " . $message . " الوقت والتاريخ " . now()
+                'لقد قام ' . $userType . ' ' . $user->name . " ب" . $message . " الوقت والتاريخ " . now()
             );
     }
 }

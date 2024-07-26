@@ -30,9 +30,9 @@ class EditProcedure extends EditRecord
     {
         $data['user_id'] = auth()->user()->id;
         $data['status'] = 0;
-        $user = Procedure::create($data);
+        $record->update($data);
         UserService::NotificationsAdmin('تم تعديل اجراء من قبل المستخدم ' . auth()->user()->name);
         UserService::userActivity('تعديل اجراء : ' . $data['name']);
-        return $user;
+        return $record;
     }
 }

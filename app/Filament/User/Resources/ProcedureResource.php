@@ -282,6 +282,8 @@ class ProcedureResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('print_pdf')
                         ->label('طباعة ك PDF')

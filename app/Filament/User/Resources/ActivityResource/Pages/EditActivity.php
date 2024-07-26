@@ -29,9 +29,9 @@ class EditActivity extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $data['user_id'] = auth()->user()->id;
-        $user = Activity::create($data);
+        $record->update($data);
         UserService::NotificationsAdmin('تم تعديل نشاط من قبل المستخدم ' . auth()->user()->name);
         UserService::userActivity('تعديل نشاط : ' . $data['name']);
-        return $user;
+        return $record;
     }
 }

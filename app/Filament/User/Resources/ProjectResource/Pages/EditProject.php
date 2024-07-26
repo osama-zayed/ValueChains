@@ -29,9 +29,9 @@ class EditProject extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $data['user_id'] = auth()->user()->id;
-        $user = Project::create($data);
+        $record->update($data);
         UserService::NotificationsAdmin('تم تعديل مشروع من قبل المستخدم ' . auth()->user()->name);
         UserService::userActivity('تعديل مشروع : ' . $data['name']);
-        return $user;
+        return $record;
     }
 }

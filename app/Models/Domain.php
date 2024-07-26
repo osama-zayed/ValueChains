@@ -26,14 +26,5 @@ class Domain extends Model
     protected $fillable = [
         'id',
         'name',
-        'hijri_created_at',
     ];
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $hijriToday = Hijri::Date('o', Carbon::now());
-            $model->hijri_created_at = $hijriToday;
-        });
-    }
 }

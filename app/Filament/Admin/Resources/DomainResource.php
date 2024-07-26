@@ -12,7 +12,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 class DomainResource extends Resource
 {
     protected static ?string $model = Domain::class;
@@ -45,11 +44,6 @@ class DomainResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم المجال')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('hijri_created_at')
-                    ->dateTime()
-                    ->label('سنة الاقرار')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('وقت الاضافة')

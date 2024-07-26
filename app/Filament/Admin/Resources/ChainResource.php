@@ -14,7 +14,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Alkoumi\LaravelHijriDate\Hijri;
+use Carbon\Carbon;
 class ChainResource extends Resource
 {
     protected static ?string $model = Chain::class;
@@ -82,7 +83,6 @@ class ChainResource extends Resource
                     ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('hijri_created_at')
-                    ->dateTime()
                     ->label('سنة الاقرار')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -109,6 +109,20 @@ class ChainResource extends Resource
                         return User::where('user_type', 'user')->pluck('name', 'id');
                     })
                     ->relationship('user', 'name'),
+                    SelectFilter::make('hijri_created_at')
+                    ->label('سنة الاقرار')
+                    ->options([
+                        Hijri::Date('o', Carbon::now()->subYears(6)) =>    Hijri::Date('o', Carbon::now()->subYears(6)),
+                        Hijri::Date('o', Carbon::now()->subYears(5)) =>    Hijri::Date('o', Carbon::now()->subYears(5)),
+                        Hijri::Date('o', Carbon::now()->subYears(4)) =>    Hijri::Date('o', Carbon::now()->subYears(4)),
+                        Hijri::Date('o', Carbon::now()->subYears(3)) =>    Hijri::Date('o', Carbon::now()->subYears(3)),
+                        Hijri::Date('o', Carbon::now()->subYears(2)) =>    Hijri::Date('o', Carbon::now()->subYears(2)),
+                        Hijri::Date('o', Carbon::now()->subYears(1)) =>    Hijri::Date('o', Carbon::now()->subYears(1)),
+                        Hijri::Date('o', Carbon::now()) =>    Hijri::Date('o', Carbon::now()),
+                        Hijri::Date('o', Carbon::now()->addYears(1)) =>    Hijri::Date('o', Carbon::now()->addYears(1)),
+                        Hijri::Date('o', Carbon::now()->addYears(2)) =>    Hijri::Date('o', Carbon::now()->addYears(2)),
+                    ])
+                    ->placeholder('اختر سنة الإقرار')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

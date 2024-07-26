@@ -29,6 +29,7 @@ class EditProcedure extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $data['user_id'] = auth()->user()->id;
+        $data['status'] = 0;
         $user = Procedure::create($data);
         UserService::NotificationsAdmin('تم تعديل اجراء من قبل المستخدم ' . auth()->user()->name);
         UserService::userActivity('تعديل اجراء : ' . $data['name']);

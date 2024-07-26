@@ -29,10 +29,6 @@ class ActivitylogRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('سجل الانشطة')
             ->columns([
-                Tables\Columns\TextColumn::make('event')
-                    ->sortable()
-                    ->label('الحدث')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('description')
                     ->label('الوصف')
                     ->sortable(),

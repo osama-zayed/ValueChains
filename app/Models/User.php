@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function activitylog()
     {
-        return $this->hasMany(Activitylog::class,'subject_id');
+        return $this->hasMany(Activitylog::class,'causer_id');
     }
 
 }

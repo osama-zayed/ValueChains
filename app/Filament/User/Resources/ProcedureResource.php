@@ -109,9 +109,6 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
-                    ->createOptionForm(
-                        ProjectResource::projectForm()
-                    )
                     ->afterStateUpdated(fn (callable $set) => $set('activity_id', null)),
 
                 Forms\Components\Select::make('activity_id')
@@ -127,9 +124,6 @@ class ProcedureResource extends Resource
                         }
                         return Activity::where('user_id', auth()->user()->id)->pluck('name', 'id');
                     })
-                    ->createOptionForm(
-                        ActivityResource::activityForm()
-                    )
                     ->reactive(),
 
             ])->columns(2)->collapsed(2),

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\User;
@@ -20,13 +21,13 @@ class UserService
             }
         }
     }
-    public static function userActivity($message,  $userType = 'المستخدم')
+    public static function userActivity($message,   $userType = 'المستخدم')
     {
-        $user = auth('sanctum')->user();
+        $user = auth()->user();
 
         activity()->causedBy($user)
             ->log(
-                'لقد قام' . $userType .' '. $user->name .  $message . " الوقت والتاريخ " . now()
+                'لقد قام ' . $userType . ' ' . $user->name . " " . $message . " الوقت والتاريخ " . now()
             );
     }
 }

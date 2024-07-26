@@ -17,7 +17,7 @@ class CreateProject extends CreateRecord
         $data['user_id'] = auth()->user()->id;
         $user = Project::create($data);
         UserService::NotificationsAdmin('تم اضافة مشروع جديد من قبل المستخدم '.auth()->user()->name);
-        UserService::userActivity('تم اضافة اجراء جديد : ' . $data['name']);
+        UserService::userActivity('اضافة مشروع : ' . $data['name']);        
         return $user;
     }
 }

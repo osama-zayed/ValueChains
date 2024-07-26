@@ -18,7 +18,7 @@ class CreateProcedure extends CreateRecord
         $data['status'] = 0;
         $user = Procedure::create($data);
         UserService::NotificationsAdmin('تم اضافة اجراء جديد من قبل المستخدم ' . auth()->user()->name);
-        UserService::userActivity('تم اضافة اجراء جديد : ' . $data['name']);
+        UserService::userActivity('اضافة اجراء : ' . $data['name']);
         return $user;
     }
 }

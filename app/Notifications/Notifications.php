@@ -15,7 +15,7 @@ class Notifications extends Notification
     }
     public function via(object $notifiable): array
     {
-        return $notifiable->prefers_sms ? ['vonage'] : [ 'database'];
+        return ['database'];
     }
     public function toDatabase($notifiable)
     {

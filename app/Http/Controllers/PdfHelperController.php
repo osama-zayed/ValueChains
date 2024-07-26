@@ -11,9 +11,21 @@ use Illuminate\Http\Request;
 
 class PdfHelperController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public static function printPdf()
     {
-        $data = Procedure::whereIn('id', request('data'))->get();
+        if (auth()->user()->user_type == 'admin') {
+            $data = Procedure::whereIn('id', request('data'))->get();
+        } else {
+            $data = Procedure::where('user_id', auth()->user()->id)->whereIn('id', request('data'))->get();
+        }
+        return  self::print($data);
+    }
+    public static function print($data)
+    {
 
         // Set up mPDF with UTF-8 support
         $mpdf = new Mpdf([

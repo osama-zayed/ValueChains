@@ -235,8 +235,11 @@ class ProcedureResource extends Resource
                 Tables\Columns\IconColumn::make('status')
                     ->label('الحالة')
                     ->boolean(),
-                // Tables\Columns\TextColumn::make('hijri_created_at')
-                //     ->searchable(),
+                Tables\Columns\TextColumn::make('hijri_created_at')
+                    ->dateTime()
+                    ->label('سنة الاقرار')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('وقت الاضافة')
@@ -296,16 +299,7 @@ class ProcedureResource extends Resource
     {
         // Get the IDs from the records
         $recordIds = $records->pluck('id')->toArray();
-        $data = Procedure::whereIn('id', $recordIds)->get();
-        $mpdf = new Mpdf();
-        $html = view('report.index', [
-            'data' => $data
-        ])->render();
-        $mpdf->WriteHTML($html);
-        $pdfContent = $mpdf->Output('', 'S');
-        return response($pdfContent)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="report.pdf"');
+        return redirect()->route('report', ['data' => $recordIds]);
     }
 
     public static function getPages(): array

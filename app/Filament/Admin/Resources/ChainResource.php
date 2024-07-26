@@ -81,11 +81,11 @@ class ChainResource extends Resource
                     ->label('المستخدم')
                     ->searchable()
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('hijri_created_at')
-                //     ->dateTime()
-                //     ->label('وقت الاضافة')
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('hijri_created_at')
+                    ->dateTime()
+                    ->label('سنة الاقرار')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('وقت الاضافة')

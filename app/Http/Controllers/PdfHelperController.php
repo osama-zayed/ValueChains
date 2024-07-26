@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Alkoumi\LaravelHijriDate\Hijri;
 use App\Models\Procedure;
 use App\Notifications\Notifications;
+use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Illuminate\Http\Request;
 
@@ -21,10 +24,15 @@ class PdfHelperController extends Controller
             'margin_top' => 10,
             'margin_bottom' => 10,
         ]);
-
+        $today = Carbon::now()->format('Y / m / d');
+        $hijriToday = Hijri::Date('l dS F o', Carbon::now());
+        $hijriToYear = Hijri::Date('o', Carbon::now());
         // Render the view to HTML
         $html = view('report.index', [
-            'data' => $data
+            'data' => $data,
+            'today' => $today,
+            'hijriToday' => $hijriToday,
+            'hijriToYear' => $hijriToYear,
         ])->render();
 
         // Debug the HTML content (optional)

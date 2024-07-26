@@ -19,6 +19,7 @@
         .header {
             width: 100%;
             overflow: hidden;
+            height: 100px;
         }
 
         .left,
@@ -29,10 +30,6 @@
             text-align: center;
         }
 
-
-        .center img {
-            max-height: 50px;
-        }
 
 
         table {
@@ -71,13 +68,19 @@
         .text-center {
             text-align: center;
         }
+
+        .mt-3 {
+            margin-top: 3px;
+        }
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="left">
-            <p>الرقم (&nbsp;)<br>التاريخ ({{ now() }})<br>الموافق ( )</p>
+            <p>الرقم (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
+            <p>التاريخ : {{ $today }}</p>
+            <p>الموافق : {{ $hijriToday }}</p>
         </div>
         <div class="center">
             <p>بسم الله الرحمن الرحيم</p>
@@ -775,8 +778,12 @@
             </div>
         </div>
         <div class="right">
-            <p>الجمهورية اليمنية<br>وزارة الزراعة والري<br>قطاع الإنتاج النباتي
-                <br>البرنامج الوطني لتحسين وتطوير سلامة المنتج المحلي للمحاصيل الزراعية
+            <p style="font-weight: 600">
+                <span style="font-size: 22px"> الجمهورية اليمنية</span>
+                <br>وزارة الزراعة والري<br>قطاع الإنتاج النباتي
+                <br>
+                <span style="font-size: 10px "> البرنامج الوطني لتطوير وتحسين سلاسل القيمة للمحاصيل الزراعية
+                </span>
             </p>
         </div>
     </div>
@@ -784,8 +791,8 @@
         <thead>
             <tr>
                 <td colspan="18"
-                    style="text-align: center;border: solid 1px black;font-size: 18px;font-weight: bold;background-color: #ddebf7">
-                    مصفوفة الخطة التنفيذية الربعية لبرنامج سلاسل القيمة من العام الهجري 1446 ه </td>
+                    style="text-align: center;border: solid 1px black;font-size: 18px;font-weight: 700;background-color: #ddebf7">
+                    مصفوفة الخطة التنفيذية الربعية لبرنامج سلاسل القيمة من العام الهجري {{ $hijriToYear }} </td>
             </tr>
             <tr>
                 <th>م</th>
@@ -830,7 +837,11 @@
                     <td>{{ $item->procedure_end_date }}</td>
                     <td>{{ $item->cost }}</td>
                     <td>{{ $item->funding_source }}</td>
-                    <td>{{ $item->status }}</td>
+                    @if ($item->status)
+                    <td>اكتملت</td>
+                    @else
+                    <td>قيد العمل</td>
+                    @endif
                     <td>{{ $item->user->name }}</td>
 
                     {{-- <td>{{ $item->hijri_created_at }}</td>

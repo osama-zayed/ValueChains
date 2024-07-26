@@ -7,6 +7,7 @@ use App\Models\Activity;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\UserService;
 
 class CreateActivity extends CreateRecord
 {
@@ -15,7 +16,11 @@ class CreateActivity extends CreateRecord
     {
         $data['user_id'] = auth()->user()->id;
         $user = Activity::create($data);
-
+        UserService::NotificationsAdmin('تم اضافة نشاط جديد من قبل المستخدم '.auth()->user()->name);
+        UserService::userActivity('تم اضافة نشاط جديد : '.$data['name']);
         return $user;
+
     }
+
+
 }

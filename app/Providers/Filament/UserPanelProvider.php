@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Admin\Resources\ActivityResource\Widgets\ActivityChart;
 use App\Filament\Admin\Resources\ProcedureResource\Widgets\ProcedureChart;
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\EditProfile;
 use App\Http\Middleware\Permission;
 use App\Http\Middleware\userStatus;
 use Filament\Http\Middleware\Authenticate;
@@ -44,6 +45,7 @@ class UserPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->databaseNotifications()
+            ->profile(EditProfile::class)
             ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
                 ActivityChart::class,

@@ -1,8 +1,6 @@
 <?php
 
-use App\Notifications\Notifications;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('filament.admin.pages.dashboard');
 });
+Route::get('/report',[\App\Http\Controllers\PdfHelperController::class,'printPdf'])->name('report');

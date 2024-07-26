@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Alkoumi\LaravelHijriDate\Hijri;
+use Carbon\Carbon;
 
 class Activity extends Model
 {
@@ -33,15 +35,22 @@ class Activity extends Model
         'project_id',
         'hijri_created_at',
     ];
-
-     /**
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $hijriToday = Hijri::Date('o', Carbon::now());
+            $model->hijri_created_at = $hijriToday;
+        });
+    }
+    /**
      * Get the project with the Activity.
      */
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
-     /**
+    /**
      * Get the Domain with the Activity.
      */
     public function domain()

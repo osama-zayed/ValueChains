@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 // use Butschster\HijriDate\Hijri;
-
+use Alkoumi\LaravelHijriDate\Hijri;
+use Carbon\Carbon;
 class Domain extends Model
 {
     use HasFactory;
@@ -27,16 +28,12 @@ class Domain extends Model
         'name',
         'hijri_created_at',
     ];
-
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::creating(function ($model) {
-    //         $model->hijri_created_at = Hijri::convertToHijri(now())->format('Y-m-d');
-    //     });
-    // }
-
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $hijriToday = Hijri::Date('o', Carbon::now());
+            $model->hijri_created_at = $hijriToday;
+        });
+    }
 }

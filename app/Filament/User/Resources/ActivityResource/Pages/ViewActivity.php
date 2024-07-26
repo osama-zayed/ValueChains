@@ -16,4 +16,10 @@ class ViewActivity extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
+    protected function authorizeAccess(): void
+    {
+        if (auth()->user()->id != $this->getRecord()->user_id) {
+            abort(404);
+        }
+    }
 }

@@ -62,8 +62,25 @@ class ProjectResource extends Resource
                 ->label('السلسلة')
                 ->options(function (callable $get) {
                     $domainId = $get('domain_id');
-                    if ($domainId) {
-                        return Chain::where('domain_id', $domainId)->pluck('name', 'id');
+                    $ringId = $get('ring_id');
+                    if ($domainId && $ringId) {
+                        return Chain::whereHas('domains', function ($query) use ($domainId) {
+                            $query->where('domains.id', $domainId);
+                        })
+                        ->whereHas('rings', function ($query) use ($ringId) {
+                            $query->where('rings.id', $ringId);
+                        })
+                        ->pluck('name', 'id');
+                    } elseif ($domainId) {
+                        return Chain::whereHas('domains', function ($query) use ($domainId) {
+                            $query->where('domains.id', $domainId);
+                        })
+                        ->pluck('name', 'id');
+                    } elseif ($ringId) {
+                        return Chain::whereHas('rings', function ($query) use ($ringId) {
+                            $query->where('rings.id', $ringId);
+                        })
+                        ->pluck('name', 'id');
                     }
                     return Chain::all()->pluck('name', 'id');
                 })
@@ -106,7 +123,6 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ring.name')
                     ->label('الحلقة')
-                    ->label('المجال')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -140,6 +156,10 @@ class ProjectResource extends Resource
                     ->label('المجال')
                     ->multiple()
                     ->relationship('domain', 'name'),
+                SelectFilter::make('ring_id')
+                    ->label('الحلقة')
+                    ->multiple()
+                    ->relationship('ring', 'name'),
                 SelectFilter::make('user_id')
                     ->label('المستخدم')
                     ->multiple()

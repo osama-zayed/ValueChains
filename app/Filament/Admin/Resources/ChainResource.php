@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Alkoumi\LaravelHijriDate\Hijri;
 use Carbon\Carbon;
+
 class ChainResource extends Resource
 {
     protected static ?string $model = Chain::class;
@@ -39,13 +40,22 @@ class ChainResource extends Resource
                 ->maxLength(65535)
                 ->columnSpanFull(),
             Forms\Components\Select::make('domain_id')
-                ->relationship('domain', titleAttribute: 'name')
+                ->relationship('domains', titleAttribute: 'name')
                 ->label('المجال')
-                ->searchable()
+                ->multiple()
                 ->preload()
                 ->required()
                 ->createOptionForm(
                     DomainResource::domainForm()
+                ),
+            Forms\Components\Select::make('ring_id')
+                ->relationship('rings', titleAttribute: 'name')
+                ->label('الحلقة')
+                ->multiple()
+                ->preload()
+                ->required()
+                ->createOptionForm(
+                    RingResource::RingForm()
                 ),
             Forms\Components\Select::make('user_id')
                 ->relationship('user', titleAttribute: 'name')
@@ -72,9 +82,14 @@ class ChainResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم السلسلة')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('domain.name')
+                Tables\Columns\TextColumn::make('domains.name')
                     ->numeric()
                     ->label('المجال')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('rings.name')
+                    ->numeric()
+                    ->label('الحلقة')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
@@ -82,7 +97,7 @@ class ChainResource extends Resource
                     ->label('المستخدم')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('hijri_created_at')
+                Tables\Columns\TextColumn::make('hijri_created_at')
                     ->label('سنة الاقرار')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -101,7 +116,11 @@ class ChainResource extends Resource
                 SelectFilter::make('domain_id')
                     ->label('المجال')
                     ->multiple()
-                    ->relationship('domain', 'name'),
+                    ->relationship('domains', 'name'),
+                SelectFilter::make('ring_id')
+                    ->label('الحلقة')
+                    ->multiple()
+                    ->relationship('rings', 'name'),
                 SelectFilter::make('user_id')
                     ->label('المستخدم')
                     ->multiple()
@@ -109,7 +128,7 @@ class ChainResource extends Resource
                         return User::where('user_type', 'user')->pluck('name', 'id');
                     })
                     ->relationship('user', 'name'),
-                    SelectFilter::make('hijri_created_at')
+                SelectFilter::make('hijri_created_at')
                     ->label('سنة الاقرار')
                     ->options([
                         Hijri::Date('o', Carbon::now()->subYears(6)) =>    Hijri::Date('o', Carbon::now()->subYears(6)),

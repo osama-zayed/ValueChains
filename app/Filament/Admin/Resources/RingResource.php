@@ -26,7 +26,7 @@ class RingResource extends Resource
     {
         return [Forms\Components\TextInput::make('name')
             ->required()
-            ->label('اسم المجال')
+            ->label('اسم الحلقة')
             ->columnSpanFull()
             ->maxLength(255)];
     }
@@ -42,7 +42,7 @@ class RingResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم المجال')
+                    ->label('اسم الحلقة')
                     ->searchable(),
                     Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -790,7 +790,7 @@
     <table class="order-details">
         <thead>
             <tr>
-                <td colspan="18"
+                <td colspan="21"
                     style="text-align: center;border: solid 1px black;font-size: 18px;font-weight: 700;background-color: #ddebf7">
                     مصفوفة الخطة التنفيذية الربعية لبرنامج سلاسل القيمة من العام الهجري {{ $hijriToYear }} </td>
             </tr>
@@ -798,6 +798,7 @@
                 <th>م</th>
                 <th>اسم السلسلة</th>
                 <th>المجال</th>
+                <th>الحلقة</th>
                 <th>الاهداف</th>
                 <th>المشروع</th>
                 <th>الانشطة</th>
@@ -811,7 +812,9 @@
                 <th>نهاية تنفيذ الإجراء</th>
                 <th>التكلفة</th>
                 <th>مصدر التمويل</th>
+                <th>الجهة المشرفة</th>
                 <th>الحالة</th>
+                <th>وسائل التحقق</th>
                 <th>المعني بتنفيذ النشاط/الاجراء</th>
 
                 {{-- <th>تاريخ الإنشاء بالهجري</th> --}}
@@ -824,6 +827,7 @@
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->chain->name }}</td>
                     <td>{{ $item->domain->name }}</td>
+                    <td>{{ $item->ring->name }}</td>
                     <td>{{ $item->chain->Goals }}</td>
                     <td>{{ $item->project->name }}</td>
                     <td>{{ $item->activity->name }}</td>
@@ -837,11 +841,13 @@
                     <td>{{ $item->procedure_end_date }}</td>
                     <td>{{ $item->cost }}</td>
                     <td>{{ $item->funding_source }}</td>
+                    <td>{{ $item->supervisory_authority }}</td>
                     @if ($item->status)
                     <td>اكتملت</td>
                     @else
                     <td>قيد العمل</td>
                     @endif
+                    <td>{{ $item->verification_methods }}</td>
                     <td>{{ $item->user->name }}</td>
 
                     {{-- <td>{{ $item->hijri_created_at }}</td>

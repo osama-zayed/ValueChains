@@ -22,6 +22,7 @@ use Filament\Tables\Actions\BulkAction;
 use Mpdf\Mpdf;
 use PDF;
 use Alkoumi\LaravelHijriDate\Hijri;
+use App\Models\Ring;
 use Carbon\Carbon;
 
 class ProcedureResource extends Resource
@@ -81,7 +82,17 @@ class ProcedureResource extends Resource
                     )
                     ->required()
                     ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-
+                Forms\Components\Select::make('ring_id')
+                    ->label('الحلقة')
+                    ->options(Ring::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        RingResource::RingForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
                 Forms\Components\Select::make('chain_id')
                     ->label('السلسلة')
                     ->options(function (callable $get) {
@@ -205,6 +216,12 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain.name')
+                    ->label('المجال')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('ring.name')
+                    ->label('الحلقة')
                     ->label('المجال')
                     ->searchable()
                     ->sortable()

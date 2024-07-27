@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Alkoumi\LaravelHijriDate\Hijri;
 use Carbon\Carbon;
+
 class Procedure extends Model
 {
     use HasFactory;
@@ -71,6 +72,13 @@ class Procedure extends Model
     public function domain()
     {
         return $this->belongsTo(Domain::class);
+    }
+    /**
+     * Get the ring with the Procedure.
+     */
+    public function ring()
+    {
+        return $this->belongsTo(Ring::class);
     }
     /**
      * Get the chain with the Procedure.

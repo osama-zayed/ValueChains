@@ -59,6 +59,13 @@ class Activity extends Model
         return $this->belongsTo(Domain::class);
     }
     /**
+     * Get the ring with the Activity.
+     */
+    public function ring()
+    {
+        return $this->belongsTo(Ring::class);
+    }
+    /**
      * Get the chain with the Activity.
      */
     public function chain()

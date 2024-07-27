@@ -8,6 +8,7 @@ use App\Models\Activity;
 use App\Models\Chain;
 use App\Models\Domain;
 use App\Models\Project;
+use App\Models\Ring;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -61,6 +62,17 @@ class ActivityResource extends Resource
                     ->required()
                     ->createOptionForm(
                         DomainResource::domainForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('ring_id')
+                    ->label('الحلقة')
+                    ->options(Ring::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        RingResource::RingForm()
                     )
                     ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
                 Forms\Components\Select::make('chain_id')
@@ -141,6 +153,10 @@ class ActivityResource extends Resource
                     ->numeric()
                     ->label('المجال')
                     ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ring.name')
+                    ->numeric()
+                    ->label('الحلقة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('chain.name')
                     ->numeric()

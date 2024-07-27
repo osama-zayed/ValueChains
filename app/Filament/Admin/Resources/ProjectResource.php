@@ -17,7 +17,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Alkoumi\LaravelHijriDate\Hijri;
+use App\Models\Ring;
 use Carbon\Carbon;
+
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
@@ -45,7 +47,17 @@ class ProjectResource extends Resource
                     DomainResource::domainForm()
                 )
                 ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-
+            Forms\Components\Select::make('ring_id')
+                ->label('الحلقة')
+                ->options(Ring::all()->pluck('name', 'id'))
+                ->reactive()
+                ->searchable()
+                ->preload()
+                ->required()
+                ->createOptionForm(
+                    RingResource::RingForm()
+                )
+                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
             Forms\Components\Select::make('chain_id')
                 ->label('السلسلة')
                 ->options(function (callable $get) {
@@ -92,6 +104,12 @@ class ProjectResource extends Resource
                     ->label('المجال')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('ring.name')
+                    ->label('الحلقة')
+                    ->label('المجال')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('chain.name')
                     ->numeric()
                     ->label('السلسلة')
@@ -102,7 +120,7 @@ class ProjectResource extends Resource
                     ->label('المستخدم')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('hijri_created_at')
+                Tables\Columns\TextColumn::make('hijri_created_at')
                     ->label('سنة الاقرار')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -133,7 +151,7 @@ class ProjectResource extends Resource
                     ->label('السلسلة')
                     ->multiple()
                     ->relationship('chain', 'name'),
-                    SelectFilter::make('hijri_created_at')
+                SelectFilter::make('hijri_created_at')
                     ->label('سنة الاقرار')
                     ->options([
                         Hijri::Date('o', Carbon::now()->subYears(6)) =>    Hijri::Date('o', Carbon::now()->subYears(6)),

@@ -47,6 +47,14 @@ class Project extends Model
     {
         return $this->belongsTo(Domain::class);
     }
+            /**
+     * Get the ring with the Project.
+     */
+    public function ring()
+    {
+        return $this->belongsTo(Ring::class);
+    }
+
     /**
      * Get the chain with the Project.
      */

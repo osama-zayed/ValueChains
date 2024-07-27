@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('filament.admin.pages.dashboard');
+    return redirect()->route('filament.user.pages.dashboard');
 });
 Route::get('/report',[\App\Http\Controllers\PdfHelperController::class,'printPdf'])->name('report');

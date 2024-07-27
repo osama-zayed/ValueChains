@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Alkoumi\LaravelHijriDate\Hijri;
 use Carbon\Carbon;
+
 class Chain extends Model
 {
     use HasFactory;
@@ -29,7 +30,7 @@ class Chain extends Model
         'hijri_created_at',
         'user_id',
     ];
-     
+
     protected static function boot()
     {
         parent::boot();
@@ -41,11 +42,20 @@ class Chain extends Model
     /**
      * Get the Domain with the Chain.
      */
-    public function domain()
+    public function domains()
     {
-        return $this->belongsTo(Domain::class);
+        return $this->belongsToMany(Domain::class, 'chain_domain')
+            ->withTimestamps();
     }
-     /**
+    /**
+     * Get the Ring with the Chain.
+     */
+    public function rings()
+    {
+        return $this->belongsToMany(Ring::class, 'chain_ring')
+            ->withTimestamps();
+    }
+    /**
      * Get the user with the Chain.
      */
     public function user()

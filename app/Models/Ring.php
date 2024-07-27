@@ -27,4 +27,12 @@ class Ring extends Model
         'id',
         'name',
     ];
+        /**
+     * Get the Chains with the Ring.
+     */
+    public function chains()
+    {
+        return $this->belongsToMany(Chain::class, 'chain_ring')
+            ->withTimestamps();
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 // use Butschster\HijriDate\Hijri;
 use Alkoumi\LaravelHijriDate\Hijri;
 use Carbon\Carbon;
+
 class Domain extends Model
 {
     use HasFactory;
@@ -27,4 +28,13 @@ class Domain extends Model
         'id',
         'name',
     ];
+
+    /**
+     * Get the Chains with the Domain.
+     */
+    public function chains()
+    {
+        return $this->belongsToMany(Chain::class, 'chain_domain')
+            ->withTimestamps();
+    }
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('chain_id')->references('id')->on('chains');
             $table->foreignId('project_id')->references('id')->on('projects');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('ring_id')->references('id')->on('rings');
             $table->timestamps();
         });
     }

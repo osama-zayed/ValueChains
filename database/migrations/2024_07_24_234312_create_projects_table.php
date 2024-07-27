@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('domain_id')->references('id')->on('domains');
             $table->foreignId('chain_id')->references('id')->on('chains');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('ring_id')->references('id')->on('rings');
             $table->timestamps();
         });
     }

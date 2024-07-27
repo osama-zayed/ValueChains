@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('procedures', function (Blueprint $table) {
             $table->string('verification_methods')->nullable();
-
         });
     }
 

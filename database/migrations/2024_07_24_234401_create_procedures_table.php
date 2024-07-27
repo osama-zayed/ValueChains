@@ -29,6 +29,7 @@ return new class extends Migration
         $table->string('funding_source'); // مصدر التمويل
         $table->boolean('status'); // الحالة
         $table->string('attached_file')->nullable(); // مرفق ملف
+        $table->foreignId('ring_id')->references('id')->on('rings');
         $table->timestamps();
     });
 }

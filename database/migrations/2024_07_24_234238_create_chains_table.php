@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->text('Goals');
             $table->string('hijri_created_at')->nullable();
-            $table->foreignId('domain_id')->references('id')->on('domains');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });

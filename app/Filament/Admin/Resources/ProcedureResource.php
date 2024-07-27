@@ -66,67 +66,70 @@ class ProcedureResource extends Resource
                 Forms\Components\TextInput::make('funding_source')
                     ->required()
                     ->label('مصدر التمويل')
-                    ->columnSpanFull()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('supervisory_authority')
+                    ->required()
+                    ->label('الجهة المشرفة')
                     ->maxLength(255),
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([
 
                 Forms\Components\Select::make('domain_id')
-                ->label('المجال')
-                ->options(Domain::all()->pluck('name', 'id'))
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->required()
-                ->createOptionForm(
-                    DomainResource::domainForm()
-                )
-                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-            Forms\Components\Select::make('ring_id')
-                ->label('الحلقة')
-                ->options(Ring::all()->pluck('name', 'id'))
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->required()
-                ->createOptionForm(
-                    RingResource::RingForm()
-                )
-                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-            Forms\Components\Select::make('chain_id')
-                ->label('السلسلة')
-                ->options(function (callable $get) {
-                    $domainId = $get('domain_id');
-                    $ringId = $get('ring_id');
-                    if ($domainId && $ringId) {
-                        return Chain::whereHas('domains', function ($query) use ($domainId) {
-                            $query->where('domains.id', $domainId);
-                        })
-                        ->whereHas('rings', function ($query) use ($ringId) {
-                            $query->where('rings.id', $ringId);
-                        })
-                        ->pluck('name', 'id');
-                    } elseif ($domainId) {
-                        return Chain::whereHas('domains', function ($query) use ($domainId) {
-                            $query->where('domains.id', $domainId);
-                        })
-                        ->pluck('name', 'id');
-                    } elseif ($ringId) {
-                        return Chain::whereHas('rings', function ($query) use ($ringId) {
-                            $query->where('rings.id', $ringId);
-                        })
-                        ->pluck('name', 'id');
-                    }
-                    return Chain::all()->pluck('name', 'id');
-                })
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->createOptionForm(
-                    ChainResource::chainForm()
-                )
-                ->required(),
-                
+                    ->label('المجال')
+                    ->options(Domain::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        DomainResource::domainForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('ring_id')
+                    ->label('الحلقة')
+                    ->options(Ring::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        RingResource::RingForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('chain_id')
+                    ->label('السلسلة')
+                    ->options(function (callable $get) {
+                        $domainId = $get('domain_id');
+                        $ringId = $get('ring_id');
+                        if ($domainId && $ringId) {
+                            return Chain::whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->whereHas('rings', function ($query) use ($ringId) {
+                                    $query->where('rings.id', $ringId);
+                                })
+                                ->pluck('name', 'id');
+                        } elseif ($domainId) {
+                            return Chain::whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->pluck('name', 'id');
+                        } elseif ($ringId) {
+                            return Chain::whereHas('rings', function ($query) use ($ringId) {
+                                $query->where('rings.id', $ringId);
+                            })
+                                ->pluck('name', 'id');
+                        }
+                        return Chain::all()->pluck('name', 'id');
+                    })
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm(
+                        ChainResource::chainForm()
+                    )
+                    ->required(),
+
                 Forms\Components\Select::make('project_id')
                     ->label('المشروع')
                     ->options(function (callable $get) {
@@ -179,13 +182,44 @@ class ProcedureResource extends Resource
                 ->required(),
 
             Forms\Components\Section::make([
+                Forms\Components\TextInput::make('verification_methods')
+                    ->label('وسائل التحقق')
+                    ->columnSpanFull()
+                    ->maxLength(255)
+                    ->required(function (callable $get) {
+                        $verificationMethods = $get('attached_file');
+                        if (!empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->nullable(function (callable $get) {
+                        $verificationMethods = $get('attached_file');
+                        if (empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->live(),
                 Forms\Components\FileUpload::make('attached_file')
                     ->label('مرفق المصفوفة')
-                    ->required()
-                    ->nullable()
+                    ->columnSpanFull()
+                    ->live()
                     ->downloadable()
+
                     ->directory('attached_file')
-            ]),
+                    ->required(function (callable $get) {
+                        $verificationMethods = $get('verification_methods');
+                        if (!empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->nullable(function (callable $get) {
+                        $verificationMethods = $get('verification_methods');
+                        if (empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->directory('attached_file')
+            ])->columns(2)->collapsed(2)
         ];
     }
 
@@ -231,6 +265,10 @@ class ProcedureResource extends Resource
                     ->label('مصدر التمويل')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('supervisory_authority')
+                    ->label('الجهة المشرفة')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain.name')
                     ->label('المجال')
                     ->searchable()
@@ -274,13 +312,19 @@ class ProcedureResource extends Resource
                     ->label('وزن النشاط')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
+                Tables\Columns\TextColumn::make('verification_methods')
+                    ->numeric()
+                    ->label('وسائل التحقق')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('المستخدم')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('الحالة')
@@ -311,7 +355,7 @@ class ProcedureResource extends Resource
                     ->label('المجال')
                     ->multiple()
                     ->relationship('domain', 'name'),
-                    SelectFilter::make('ring_id')
+                SelectFilter::make('ring_id')
                     ->label('الحلقة')
                     ->multiple()
                     ->relationship('ring', 'name'),

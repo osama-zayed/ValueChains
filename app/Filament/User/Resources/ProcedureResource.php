@@ -69,7 +69,10 @@ class ProcedureResource extends Resource
                 Forms\Components\TextInput::make('funding_source')
                     ->required()
                     ->label('مصدر التمويل')
-                    ->columnSpanFull()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('supervisory_authority')
+                    ->required()
+                    ->label('الجهة المشرفة')
                     ->maxLength(255),
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([
@@ -156,13 +159,44 @@ class ProcedureResource extends Resource
             ])->columns(2)->collapsed(2),
 
             Forms\Components\Section::make([
+                Forms\Components\TextInput::make('verification_methods')
+                    ->label('وسائل التحقق')
+                    ->columnSpanFull()
+                    ->maxLength(255)
+                    ->required(function (callable $get) {
+                        $verificationMethods = $get('attached_file');
+                        if (!empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->nullable(function (callable $get) {
+                        $verificationMethods = $get('attached_file');
+                        if (empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->live(),
                 Forms\Components\FileUpload::make('attached_file')
                     ->label('مرفق المصفوفة')
-                    ->required()
-                    ->nullable()
+                    ->columnSpanFull()
+                    ->live()
                     ->downloadable()
+
                     ->directory('attached_file')
-            ]),
+                    ->required(function (callable $get) {
+                        $verificationMethods = $get('verification_methods');
+                        if (!empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->nullable(function (callable $get) {
+                        $verificationMethods = $get('verification_methods');
+                        if (empty($verificationMethods)) {
+                            return true;
+                        }
+                    })
+                    ->directory('attached_file')
+            ])->columns(2)->collapsed(2)
         ];
     }
 
@@ -208,6 +242,10 @@ class ProcedureResource extends Resource
                     ->label('مصدر التمويل')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('supervisory_authority')
+                    ->label('الجهة المشرفة')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain.name')
                     ->label('المجال')
                     ->searchable()
@@ -251,7 +289,12 @@ class ProcedureResource extends Resource
                     ->label('وزن النشاط')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
+                    Tables\Columns\TextColumn::make('verification_methods')
+                    ->numeric()
+                    ->label('وسائل التحقق')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('المستخدم')

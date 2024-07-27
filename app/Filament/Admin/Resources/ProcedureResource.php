@@ -126,6 +126,7 @@ class ProcedureResource extends Resource
                     ChainResource::chainForm()
                 )
                 ->required(),
+                
                 Forms\Components\Select::make('project_id')
                     ->label('المشروع')
                     ->options(function (callable $get) {

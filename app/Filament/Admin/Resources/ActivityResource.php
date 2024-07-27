@@ -54,61 +54,62 @@ class ActivityResource extends Resource
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([
                 Forms\Components\Select::make('domain_id')
-                ->label('المجال')
-                ->options(Domain::all()->pluck('name', 'id'))
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->required()
-                ->createOptionForm(
-                    DomainResource::domainForm()
-                )
-                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-            Forms\Components\Select::make('ring_id')
-                ->label('الحلقة')
-                ->options(Ring::all()->pluck('name', 'id'))
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->required()
-                ->createOptionForm(
-                    RingResource::RingForm()
-                )
-                ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
-            Forms\Components\Select::make('chain_id')
-                ->label('السلسلة')
-                ->options(function (callable $get) {
-                    $domainId = $get('domain_id');
-                    $ringId = $get('ring_id');
-                    if ($domainId && $ringId) {
-                        return Chain::whereHas('domains', function ($query) use ($domainId) {
-                            $query->where('domains.id', $domainId);
-                        })
-                        ->whereHas('rings', function ($query) use ($ringId) {
-                            $query->where('rings.id', $ringId);
-                        })
-                        ->pluck('name', 'id');
-                    } elseif ($domainId) {
-                        return Chain::whereHas('domains', function ($query) use ($domainId) {
-                            $query->where('domains.id', $domainId);
-                        })
-                        ->pluck('name', 'id');
-                    } elseif ($ringId) {
-                        return Chain::whereHas('rings', function ($query) use ($ringId) {
-                            $query->where('rings.id', $ringId);
-                        })
-                        ->pluck('name', 'id');
-                    }
-                    return Chain::all()->pluck('name', 'id');
-                })
-                ->reactive()
-                ->searchable()
-                ->preload()
-                ->createOptionForm(
-                    ChainResource::chainForm()
-                )
-                ->required(),
-                
+                    ->label('المجال')
+                    ->options(Domain::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        DomainResource::domainForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('ring_id')
+                    ->label('الحلقة')
+                    ->options(Ring::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->createOptionForm(
+                        RingResource::RingForm()
+                    )
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('chain_id')
+                    ->label('السلسلة')
+                    ->options(function (callable $get) {
+                        $domainId = $get('domain_id');
+                        $ringId = $get('ring_id');
+                        if ($domainId && $ringId) {
+                            return Chain::whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->whereHas('rings', function ($query) use ($ringId) {
+                                    $query->where('rings.id', $ringId);
+                                })
+                                ->pluck('name', 'id');
+                        } elseif ($domainId) {
+                            return Chain::whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->pluck('name', 'id');
+                        } elseif ($ringId) {
+                            return Chain::whereHas('rings', function ($query) use ($ringId) {
+                                $query->where('rings.id', $ringId);
+                            })
+                                ->pluck('name', 'id');
+                        }
+                        return Chain::all()->pluck('name', 'id');
+                    })
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm(
+                        ChainResource::chainForm()
+                    )
+                    ->required()
+                    ->afterStateUpdated(fn (callable $set) => $set('project_id', null)),
+
                 Forms\Components\Select::make('project_id')
                     ->label('المشروع')
                     ->options(function (callable $get) {

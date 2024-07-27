@@ -22,7 +22,9 @@ use Filament\Tables\Actions\BulkAction;
 use Mpdf\Mpdf;
 use PDF;
 use Alkoumi\LaravelHijriDate\Hijri;
+use App\Models\Ring;
 use Carbon\Carbon;
+
 class ProcedureResource extends Resource
 {
 
@@ -80,13 +82,38 @@ class ProcedureResource extends Resource
                     ->preload()
                     ->required()
                     ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
+                Forms\Components\Select::make('ring_id')
+                    ->label('الحلقة')
+                    ->options(Ring::all()->pluck('name', 'id'))
+                    ->reactive()
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->afterStateUpdated(fn (callable $set) => $set('chain_id', null)),
 
                 Forms\Components\Select::make('chain_id')
                     ->label('السلسلة')
                     ->options(function (callable $get) {
                         $domainId = $get('domain_id');
-                        if ($domainId) {
-                            return Chain::where('user_id', auth()->user()->id)->where('domain_id', $domainId)->pluck('name', 'id');
+                        $ringId = $get('ring_id');
+                        if ($domainId && $ringId) {
+                            return Chain::where('user_id', auth()->user()->id)->whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->where('user_id', auth()->user()->id)->whereHas('rings', function ($query) use ($ringId) {
+                                    $query->where('rings.id', $ringId);
+                                })
+                                ->pluck('name', 'id');
+                        } elseif ($domainId) {
+                            return Chain::where('user_id', auth()->user()->id)->whereHas('domains', function ($query) use ($domainId) {
+                                $query->where('domains.id', $domainId);
+                            })
+                                ->pluck('name', 'id');
+                        } elseif ($ringId) {
+                            return Chain::where('user_id', auth()->user()->id)->whereHas('rings', function ($query) use ($ringId) {
+                                $query->where('rings.id', $ringId);
+                            })
+                                ->pluck('name', 'id');
                         }
                         return Chain::where('user_id', auth()->user()->id)->pluck('name', 'id');
                     })
@@ -186,6 +213,11 @@ class ProcedureResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('ring.name')
+                    ->label('الحلقة')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('chain.name')
                     ->label('السلسلة')
                     ->searchable()
@@ -250,6 +282,10 @@ class ProcedureResource extends Resource
                     ->label('المجال')
                     ->multiple()
                     ->relationship('domain', 'name'),
+                SelectFilter::make('ring_id')
+                    ->label('الحلقة')
+                    ->multiple()
+                    ->relationship('ring', 'name'),
                 SelectFilter::make('chain_id')
                     ->label('السلسلة')
                     ->multiple()
@@ -262,7 +298,7 @@ class ProcedureResource extends Resource
                     ->label('النشاط')
                     ->multiple()
                     ->relationship('activity', 'name'),
-                    SelectFilter::make('hijri_created_at')
+                SelectFilter::make('hijri_created_at')
                     ->label('سنة الاقرار')
                     ->options([
                         Hijri::Date('o', Carbon::now()->subYears(6)) =>    Hijri::Date('o', Carbon::now()->subYears(6)),

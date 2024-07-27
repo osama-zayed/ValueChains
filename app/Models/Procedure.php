@@ -39,6 +39,8 @@ class Procedure extends Model
         'funding_source',
         'status',
         'attached_file',
+        'supervisory_authority',
+        'verification_methods',
     ];
     protected static function boot()
     {

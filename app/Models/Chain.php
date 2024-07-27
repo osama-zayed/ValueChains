@@ -27,7 +27,6 @@ class Chain extends Model
         'Goals',
         'name',
         'hijri_created_at',
-        'domain_id',
         'user_id',
     ];
      

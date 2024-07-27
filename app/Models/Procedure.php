@@ -28,6 +28,7 @@ class Procedure extends Model
         'hijri_created_at',
         'domain_id',
         'chain_id',
+        'ring_id',
         'project_id',
         'activity_id',
         'user_id',

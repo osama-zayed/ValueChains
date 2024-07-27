@@ -33,6 +33,7 @@ class Activity extends Model
         'chain_id',
         'user_id',
         'project_id',
+        'ring_id',
         'hijri_created_at',
     ];
     protected static function boot()

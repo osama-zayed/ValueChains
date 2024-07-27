@@ -26,6 +26,7 @@ class Project extends Model
         'id',
         'name',
         'hijri_created_at',
+        'ring_id',
         'domain_id',
         'chain_id',
         'user_id',

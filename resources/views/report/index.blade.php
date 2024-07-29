@@ -790,7 +790,7 @@
     <table class="order-details">
         <thead>
             <tr>
-                <td colspan="21"
+                <td colspan="22"
                     style="text-align: center;border: solid 1px black;font-size: 18px;font-weight: 700;background-color: #ddebf7">
                     مصفوفة الخطة التنفيذية الربعية لبرنامج سلاسل القيمة من العام الهجري {{ $hijriToYear }} </td>
             </tr>
@@ -813,6 +813,7 @@
                 <th>التكلفة</th>
                 <th>مصدر التمويل</th>
                 <th>الجهة المشرفة</th>
+                <th>الجهة المنفذة</th>
                 <th>الحالة</th>
                 <th>وسائل التحقق</th>
                 <th>المعني بتنفيذ النشاط/الاجراء</th>
@@ -842,6 +843,7 @@
                     <td>{{ $item->cost }}</td>
                     <td>{{ $item->funding_source }}</td>
                     <td>{{ $item->supervisory_authority }}</td>
+                    <td>{{ $item->executing_agency }}</td>
                     @if ($item->status)
                     <td>اكتملت</td>
                     @else

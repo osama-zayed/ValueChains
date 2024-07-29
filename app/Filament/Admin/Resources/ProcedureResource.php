@@ -71,6 +71,10 @@ class ProcedureResource extends Resource
                     ->required()
                     ->label('الجهة المشرفة')
                     ->maxLength(255),
+                Forms\Components\TextInput::make('executing_agency')
+                    ->required()
+                    ->label('الجهة المنفذة')
+                    ->maxLength(255),
             ])->columns(2)->collapsed(2),
             Forms\Components\Section::make([
 
@@ -267,6 +271,10 @@ class ProcedureResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('supervisory_authority')
                     ->label('الجهة المشرفة')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('executing_agency')
+                    ->label('الجهة المنفذة')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain.name')

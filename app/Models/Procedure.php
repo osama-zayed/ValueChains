@@ -42,6 +42,7 @@ class Procedure extends Model
         'status',
         'attached_file',
         'supervisory_authority',
+        'executing_agency',
         'verification_methods',
     ];
     protected static function boot()
